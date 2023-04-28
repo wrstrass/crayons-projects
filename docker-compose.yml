@@ -9,6 +9,18 @@ services:
       - ${BACKEND_PORT}
     env_file:
       - .env
+    depends_on:
+      - projects_db
+    networks:
+      - crayons
+
+  projects_db:
+    image: mongo
+    restart: always
+    ports:
+      - 9002:27017
+    env_file:
+      - .env
     networks:
       - crayons
 
