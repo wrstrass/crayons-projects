@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  web:
+    build: ./
+    volumes:
+      - .:/app/
+    expose:
+      - ${BACKEND_PORT}
+    env_file:
+      - .env
+    networks:
+      - crayons
+
+networks:
+  crayons:
+    name: crayons
+    driver: bridge
