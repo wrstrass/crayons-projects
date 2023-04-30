@@ -15,7 +15,7 @@ services:
       - crayons
 
   projects_db:
-    image: mongo
+    image: mongo:4.4.6
     restart: always
     ports:
       - 9002:27017
