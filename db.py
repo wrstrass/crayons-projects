@@ -6,3 +6,4 @@ client = motor.motor_asyncio.AsyncIOMotorClient(
 )
 
 database = client.data
+projects_collection = database.projects
