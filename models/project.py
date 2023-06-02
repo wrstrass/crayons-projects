@@ -5,10 +5,10 @@ from db import projects_collection
 
 
 class Permission(StrEnum):
-    FULL = auto()
-    EDIT = auto()
-    VIEW = auto()
     FORBID = auto()
+    VIEW = auto()
+    EDIT = auto()
+    FULL = auto()
 
 class PermissionSet(BaseModel):
     owner: Permission = Permission.FULL
