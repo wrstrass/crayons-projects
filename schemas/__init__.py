@@ -1,1 +1,1 @@
-from schemas.project import NameSchema
+from schemas.project import NameSchema, ProjectSchema
