@@ -34,13 +34,14 @@ class ProjectModel(BaseModel):
 
     @classmethod
     async def find(cls, **lookup) -> "ProjectModel":
-        return await cls._collection.find_one(lookup)
+        result = await cls._collection.find_one(lookup)
+        return ProjectModel(**result)
 
     @classmethod
     async def get_by_name(cls, name) -> "ProjectModel":
         return await cls.find(name=name)
 
-    async def save(self) -> None:
+    async def save(self) -> "ProjectModel":
         if self._id is None:
             result = await self._collection.insert_one(
                 self.dict()
@@ -51,3 +52,24 @@ class ProjectModel(BaseModel):
                 {"_id": self._id}, self.dict()
             )
         return self
+
+    def group(self, user_id: int) -> str:
+        if user_id in self.members.owners:
+            return "owners"
+        elif user_id in self.members.devs:
+            return "devs"
+        elif user_id in self.members.users:
+            return "users"
+        else:
+            return "etc"
+
+    def access(self, user_id: int) -> Permission:
+        group = self.group(user_id)
+        if group == "owners":
+            return self.permissions.owner
+        elif group == "devs":
+            return self.permissions.dev
+        elif group == "users":
+            return self.permissions.user
+        else:
+            return self.permissions.etc
