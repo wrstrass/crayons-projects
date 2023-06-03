@@ -2,10 +2,6 @@ from pydantic import BaseModel
 from models import ProjectModel, Members, PermissionSet, Permission
 
 
-class NameSchema(BaseModel):
-    name: str
-
-
 class ProjectSchema(BaseModel):
     name: str
     permissions: PermissionSet
