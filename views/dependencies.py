@@ -12,3 +12,9 @@ async def authenticate(access_token: str = Header()) -> int:
         raise HTTP_401(detail="Access Token expired")
 
     return jwt_token.user_id
+
+async def authenticate_optional(access_token: str | None = Header(default=None)):
+    if access_token is None:
+        return -1
+    else:
+        return await authenticate(access_token)
