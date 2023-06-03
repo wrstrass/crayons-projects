@@ -24,7 +24,7 @@ class Members(BaseModel):
 
 
 class ProjectModel(BaseModel):
-    _id: ObjectId | None = PrivateAttr(None)
+    _id: ObjectId = PrivateAttr()
     name: str
     permissions: PermissionSet = PermissionSet()
     members: Members = Members()
@@ -35,7 +35,9 @@ class ProjectModel(BaseModel):
     @classmethod
     async def find(cls, **lookup) -> "ProjectModel":
         result = await cls._collection.find_one(lookup)
-        return ProjectModel(**result)
+        model = ProjectModel(**result)
+        model._id = result["_id"]
+        return model
 
     @classmethod
     async def get_by_name(cls, name) -> "ProjectModel":
