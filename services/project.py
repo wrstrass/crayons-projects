@@ -1,5 +1,5 @@
 from exceptions import HTTP_403
-from models import ProjectModel, Permission
+from models import ProjectModel, PermissionSet, Permission
 from schemas import ProjectSchema
 
 
@@ -29,3 +29,23 @@ class ProjectService:
         project.members.__getattribute__(group).append(user_id)
         await project.save()
         return project.members.__getattribute__(group)
+
+    @staticmethod
+    async def add_diagram(project_name: str, author_id: int, diagram_oid: str):
+        project = await ProjectModel.get_by_name(project_name)
+        access_level = project.access(author_id)
+        if access_level != Permission.FULL:
+            raise HTTP_403()
+        project.diagrams.append(diagram_oid)
+        await project.save()
+        return diagram_oid
+
+    @staticmethod
+    async def set_permissions(project_name: str, author_id: int, permissions: PermissionSet):
+        project = await ProjectModel.get_by_name(project_name)
+        access_level = project.access(author_id)
+        if access_level != Permission.FULL:
+            raise HTTP_403()
+        project.permissions = permissions
+        await project.save()
+        return project.permissions
