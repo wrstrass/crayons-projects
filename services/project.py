@@ -21,6 +21,11 @@ class ProjectService:
         return ProjectSchema.from_model(project).format_access(access_level)
 
     @staticmethod
+    async def get_access(diagram_oid: str, user_id: int):
+        project = await ProjectModel.find(diagrams=diagram_oid)
+        return project.access(user_id)
+
+    @staticmethod
     async def add_user(project_name: str, author_id: int, user_id: int, group: str):
         project = await ProjectModel.get_by_name(project_name)
         access_level = project.access(author_id)
