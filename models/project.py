@@ -24,7 +24,7 @@ class Members(BaseModel):
 
 
 class ProjectModel(BaseModel):
-    _id: ObjectId = PrivateAttr()
+    _id: ObjectId = PrivateAttr(None)
     name: str
     permissions: PermissionSet = PermissionSet()
     members: Members = Members()
