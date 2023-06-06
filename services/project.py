@@ -1,6 +1,6 @@
 from exceptions import HTTP_403
 from models import ProjectModel, PermissionSet, Permission
-from schemas import ProjectSchema
+from schemas import ProjectSchema, ProjectOverview
 
 
 class ProjectService:
@@ -13,7 +13,20 @@ class ProjectService:
             },
         ).save()
         return ProjectSchema.from_model(project).format_access(Permission.FULL)
-    
+
+    @staticmethod
+    async def get_all(user_id: int) -> list[ProjectOverview]:
+        result = []
+        for group in ("owner", "dev", "user"):
+            async for project in ProjectModel._collection.find({f"members.{group}s": user_id}):
+                print(project)
+                result.append(ProjectOverview(
+                    name=project["name"],
+                    group=group + "s",
+                    permission=project["permissions"][group],
+                ))
+        return result
+
     @staticmethod
     async def get(name: str, user_id: int):
         project = await ProjectModel.get_by_name(name)

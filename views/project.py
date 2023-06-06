@@ -13,6 +13,10 @@ router = APIRouter(prefix="/projects")
 async def new_project(name: NameSchema, user_id: int = Depends(authenticate)):
     return await ProjectService.new(name.name, user_id)
 
+@router.get("/")
+async def get_projects(user_id: int = Depends(authenticate)):
+    return await ProjectService.get_all(user_id)
+
 @router.get("/{project_name}/")
 async def get_project(project_name: str, user_id: int = Depends(authenticate_optional)):
     return await ProjectService.get(project_name, user_id)
