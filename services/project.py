@@ -22,7 +22,7 @@ class ProjectService:
                 print(project)
                 result.append(ProjectOverview(
                     name=project["name"],
-                    group=group + "s",
+                    group=group,
                     permission=project["permissions"][group],
                     diagrams=len(project["diagrams"]),
                 ))
