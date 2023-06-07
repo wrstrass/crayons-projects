@@ -6,6 +6,7 @@ class ProjectOverview(BaseModel):
     name: str
     group: str
     permission: Permission
+    diagrams: int
 
 
 class ProjectSchema(BaseModel):

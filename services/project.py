@@ -24,6 +24,7 @@ class ProjectService:
                     name=project["name"],
                     group=group + "s",
                     permission=project["permissions"][group],
+                    diagrams=len(project["diagrams"]),
                 ))
         return result
 
